@@ -24,10 +24,14 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue> where TKe
 
     private Entry[] entries;
 
+    private float loadFactor = 0.75f;
     private int capacity;
     private int count;
     public int Capacity => capacity;
-    private float loadFactor = 0.75f;
+    public ICollection<TKey> Keys => entries.Where(e => e.IsOccupied).Select(e => e.Key).ToList();
+    public ICollection<TValue> Values => entries.Where(e => e.IsOccupied).Select(e => e.Value).ToList();
+    public int Count => count;
+    public bool IsReadOnly => false;
 
     public SimpleHashTable()
     {
@@ -67,14 +71,6 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue> where TKe
         }
         set => AddOrUpdate(key, value);
     }
-
-    public ICollection<TKey> Keys => entries.Where(e => e.IsOccupied).Select(e => e.Key).ToList();
-
-    public ICollection<TValue> Values => entries.Where(e => e.IsOccupied).Select(e => e.Value).ToList();
-
-    public int Count => count;
-
-    public bool IsReadOnly => false;
 
     public void Add(TKey key, TValue value)
     {
@@ -174,6 +170,16 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue> where TKe
             value = default(TValue);
             return false;
         }
+    }
+
+    public (bool IsOccupied, TKey Key, TValue Value)[] GetData()
+    {
+        var result = new (bool, TKey, TValue)[capacity];
+        for (int i = 0; i < capacity; i++)
+        {
+            result[i] = (entries[i].IsOccupied, entries[i].Key, entries[i].Value);
+        }
+        return result;
     }
 
     IEnumerator IEnumerable.GetEnumerator()
