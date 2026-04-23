@@ -39,13 +39,16 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue> where TKe
     {
         if (newCapacity > capacity)
         {
-            Entry[] newContainer = new Entry[newCapacity];
-            for (int i = 0; i < capacity; i++)
-            {
-                newContainer[i] = entries[i];
-            }
+            Entry[] oldEntries = entries;
+            entries = new Entry[newCapacity];
             capacity = newCapacity;
-            entries = newContainer;
+            count = 0;
+
+            foreach (var entry in oldEntries)
+            {
+                if (entry.IsOccupied)
+                    Add(entry.Key, entry.Value);
+            }
         }
     }
 
@@ -100,6 +103,10 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue> where TKe
     protected virtual void AddOrUpdate(TKey key, TValue value)
     {
         int hash = GetHash(key);
+        if (!entries[hash].IsOccupied)
+        {
+            count++;
+        }
         entries[hash] = new Entry(key, value, true);
     }
 
@@ -176,6 +183,6 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue> where TKe
 
     public int GetHash(TKey key)
     {
-        return key.GetHashCode() % capacity;
+        return (key.GetHashCode() & 0x7FFFFFFF) % capacity;
     }
 }
