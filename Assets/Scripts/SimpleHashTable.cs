@@ -1,57 +1,94 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using static UnityEditor.Progress;
 
 public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue> where TKey : IComparable<TKey>
 {
-    private TValue[] values;
+    private struct Entry
+    {
+        public TKey Key;
+        public TValue Value;
+        public bool IsOccupied;
+
+        public Entry(TKey key, TValue value, bool isOccupied)
+        {
+            Key = key;
+            Value = value;
+            IsOccupied = isOccupied;
+        }
+    }
+
+    private Entry[] entries;
+
     private int capacity;
-    private int size;
+    private int count;
     public int Capacity => capacity;
-    public int Size => size;
     private float loadFactor = 0.75f;
+
     public SimpleHashTable()
     {
         capacity = 16;
-        values = new TValue[capacity];
+        entries = new Entry[capacity];
     }
 
     private void Resize(int newCapacity)
     {
         if (newCapacity > capacity)
         {
-            TValue[] newContainer = new TValue[newCapacity];
+            Entry[] newContainer = new Entry[newCapacity];
             for (int i = 0; i < capacity; i++)
             {
-                newContainer[i] = values[i];
+                newContainer[i] = entries[i];
             }
             capacity = newCapacity;
-            values = newContainer;
+            entries = newContainer;
         }
     }
 
-    public TValue this[TKey key] { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+    public TValue this[TKey key]
+    {
+        get
+        {
+            if (TryGetValue(key, out TValue value))
+            {
+                return value;
+            }
+            else
+            {
+                throw new KeyNotFoundException($"키 {key} 찾을 수 없음");
+            }
+        }
+        set => AddOrUpdate(key, value);
+    }
 
-    public ICollection<TKey> Keys => throw new System.NotImplementedException();
+    public ICollection<TKey> Keys => entries.Where(e => e.IsOccupied).Select(e => e.Key).ToList();
 
-    public ICollection<TValue> Values => throw new System.NotImplementedException();
+    public ICollection<TValue> Values => entries.Where(e => e.IsOccupied).Select(e => e.Value).ToList();
 
-    public int Count => throw new System.NotImplementedException();
+    public int Count => count;
 
-    public bool IsReadOnly => throw new System.NotImplementedException();
+    public bool IsReadOnly => false;
 
     public void Add(TKey key, TValue value)
     {
-        int hash = key.GetHashCode() % capacity;
-        values[hash] = value;
-        size++;
+        int hash = GetHash(key);
+        if (entries[hash].IsOccupied)
+        {
+            throw new ArgumentException($"키 {key} 중복");
+        }
 
-        float currentFactor = size / (float)capacity;
+        entries[hash] = new Entry(key, value, true);
+        count++;
+
+        float currentFactor = count / (float)capacity;
 
         if (currentFactor > loadFactor)
         {
-
+            Resize(capacity * 2);
         }
     }
 
@@ -60,48 +97,85 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue> where TKe
         Add(item.Key, item.Value);
     }
 
+    protected virtual void AddOrUpdate(TKey key, TValue value)
+    {
+        int hash = GetHash(key);
+        entries[hash] = new Entry(key, value, true);
+    }
+
     public void Clear()
     {
-        throw new System.NotImplementedException();
+        entries = new Entry[capacity];
+        count = 0;
     }
 
     public bool Contains(KeyValuePair<TKey, TValue> item)
     {
-        throw new System.NotImplementedException();
+        return TryGetValue(item.Key, out _);
     }
 
     public bool ContainsKey(TKey key)
     {
-        throw new System.NotImplementedException();
+        return TryGetValue(key, out _);
     }
 
     public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
     {
-        throw new System.NotImplementedException();
+        foreach (Entry entry in entries)
+        {
+            array[arrayIndex++] = new KeyValuePair<TKey, TValue>(entry.Key, entry.Value);
+        }
     }
 
     public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
     {
-        throw new System.NotImplementedException();
+        foreach (Entry entry in entries)
+        {
+            if (entry.IsOccupied)
+            {
+                yield return new KeyValuePair<TKey, TValue>(entry.Key, entry.Value);
+            }
+        }
     }
 
     public bool Remove(TKey key)
     {
-        throw new System.NotImplementedException();
+        if (entries[GetHash(key)].IsOccupied)
+        {
+            entries[GetHash(key)] = new Entry();
+            count--;
+
+            return true;
+        }
+        return false;
     }
 
     public bool Remove(KeyValuePair<TKey, TValue> item)
     {
-        throw new System.NotImplementedException();
+        return Remove(item.Key);
     }
 
     public bool TryGetValue(TKey key, out TValue value)
     {
-        throw new System.NotImplementedException();
+        if (entries[GetHash(key)].IsOccupied)
+        {
+            value = entries[GetHash(key)].Value;
+            return true;
+        }
+        else
+        {
+            value = default(TValue);
+            return false;
+        }
     }
 
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
+    }
+
+    public int GetHash(TKey key)
+    {
+        return key.GetHashCode() % capacity;
     }
 }
