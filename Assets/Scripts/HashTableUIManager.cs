@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -105,7 +106,21 @@ public class HashTableUIManager : MonoBehaviour
     private void OnClearClick()
     {
         hashTable.Clear();
-        
+
+        switch (collision)
+        {
+            case Collision.Simple:
+                hashNodeView.UpdateNodeListSimple((SimpleHashTable<string, string>)hashTable);
+                break;
+            case Collision.Chaining:
+                hashNodeView.UpdateNodeListChaining((ChainingHashTable<string, string>)hashTable);
+                break;
+            case Collision.OpenAdressing:
+                hashNodeView.UpdateNodeListOpenAdressing((OpenAddressingHashTable<string, string>)hashTable);
+                break;
+
+        }
+
         logView.ClearLog();
     }
     public void OnSelectNode(string key)
