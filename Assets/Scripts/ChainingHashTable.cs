@@ -1,13 +1,20 @@
+<<<<<<< HEAD
 using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+=======
+using System;
+using System.Collections;
+using System.Collections.Generic;
+>>>>>>> d183982d15527664a0b909796fba8692bcde37ed
 using Unity.Collections;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
+<<<<<<< HEAD
 using static UnityEditor.Experimental.GraphView.Port;
 using static UnityEngine.Rendering.DebugUI;
 
@@ -89,6 +96,43 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
     }
 
     public TValue this[TKey key]
+=======
+using System.Linq;
+using static UnityEngine.Rendering.DebugUI;
+
+public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue> 
+{
+    public int Capacity=16;
+
+    protected ChainingHashTable<TKey, TValue> Chaining;
+
+    public ChainingHashTable()
+    {
+        Chaining = null;
+    }
+
+
+
+    public int GetHash(TKey key)
+    {
+        if (key == null)
+            throw new ArgumentNullException(nameof(key));
+
+        int hash = key.GetHashCode();
+        return (hash & 0x7fffffff) % Capacity;
+    }
+
+    public int GetSecondaryHash(TKey key)
+    {
+        if (key == null)
+            throw new ArgumentNullException(nameof(key));
+
+        int hash = key.GetHashCode();
+        return 1 + ((hash & 0x7fffffff) % (Capacity - 1));
+    }
+
+    public TValue this[TKey key] 
+>>>>>>> d183982d15527664a0b909796fba8692bcde37ed
     {
         get
         {
@@ -102,15 +146,22 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
             }
 
         }
+<<<<<<< HEAD
         set => AddorUpDate(key, value);
     }
 
 
 
+=======
+        set => Chaining = AddorUpDate(Chaining, key, value);
+    }
+
+>>>>>>> d183982d15527664a0b909796fba8692bcde37ed
     public ICollection<TKey> Keys => throw new System.NotImplementedException();
 
     public ICollection<TValue> Values => throw new System.NotImplementedException();
 
+<<<<<<< HEAD
     public int Count => count;
 
     public bool IsReadOnly => false;
@@ -158,6 +209,52 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
         }
 
         count = 0;
+=======
+    public int Count => throw new System.NotImplementedException();
+
+    public bool IsReadOnly => throw new System.NotImplementedException();
+
+    public void Add(TKey key, TValue value)
+    {
+        Chaining = Add(Chaining, key, value);
+    }
+
+    public void Add(KeyValuePair<TKey, TValue> item)
+    {
+        Add(item.Key, item.Value);
+    }
+    protected virtual ChainingHashTable<TKey, TValue> Add(ChainingHashTable<TKey, TValue> Chaining, TKey key, TValue value)
+    {
+
+        if (Chaining == null)
+        {
+            
+        }
+        else
+        {
+            throw new ArgumentException($"키가 존재합니다.");
+        }
+
+        return Chaining;
+    }
+
+    protected virtual ChainingHashTable<TKey, TValue> AddorUpDate(ChainingHashTable<TKey, TValue> node, TKey key, TValue value)
+    {
+
+        if (node == null)
+        {
+     
+        }
+
+   
+        return Chaining;
+    }
+
+
+    public void Clear()
+    {
+        Chaining=null;
+>>>>>>> d183982d15527664a0b909796fba8692bcde37ed
     }
 
     public bool Contains(KeyValuePair<TKey, TValue> item)
@@ -180,6 +277,7 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
     public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
     {
+<<<<<<< HEAD
         foreach (var bucket in buckets)
         {
             foreach (var kv in bucket)
@@ -187,10 +285,14 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
                 yield return kv;
             }
         }
+=======
+        throw new System.NotImplementedException();
+>>>>>>> d183982d15527664a0b909796fba8692bcde37ed
     }
 
     public bool Remove(TKey key)
     {
+<<<<<<< HEAD
         int index = GetHash(key);
         var bucket = buckets[index];
 
@@ -205,19 +307,27 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
         }
 
         return false;
+=======
+        throw new System.NotImplementedException();
+>>>>>>> d183982d15527664a0b909796fba8692bcde37ed
     }
 
     public bool Remove(KeyValuePair<TKey, TValue> item)
     {
+<<<<<<< HEAD
         if (Contains(item))
         {
             return Remove(item.Key);
         }
         return false;
+=======
+        throw new System.NotImplementedException();
+>>>>>>> d183982d15527664a0b909796fba8692bcde37ed
     }
 
     public bool TryGetValue(TKey key, out TValue value)
     {
+<<<<<<< HEAD
         int index = GetHash(key);
         var bucket = buckets[index];
 
@@ -232,6 +342,9 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
         value = default;
         return false;
+=======
+        throw new System.NotImplementedException();
+>>>>>>> d183982d15527664a0b909796fba8692bcde37ed
     }
 
     IEnumerator IEnumerable.GetEnumerator()
@@ -239,8 +352,11 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
         return GetEnumerator();
     }
 
+<<<<<<< HEAD
     void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item)
     {
         throw new NotImplementedException();
     }
+=======
+>>>>>>> d183982d15527664a0b909796fba8692bcde37ed
 }
