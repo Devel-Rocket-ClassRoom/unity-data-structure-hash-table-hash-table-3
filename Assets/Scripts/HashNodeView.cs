@@ -19,7 +19,7 @@ public class HashNodeView : MonoBehaviour
     {
         for (int i = 0; i < nodeList.Count; i++)
         {
-            Destroy(nodeList[i]);
+            Destroy(nodeList[i].gameObject);
         }
         nodeList.Clear();
         for (int i = 0; i < 16; i++)
@@ -74,4 +74,30 @@ public class HashNodeView : MonoBehaviour
             }
         }
     }
+    public void UpdateNodeListOpenAdressing(OpenAddressingHashTable<string, string> hashTable)
+    {
+        var openAdressHash = hashTable.GetData();
+
+        if (openAdressHash.Length > nodeList.Count)
+        {
+            for (int i = nodeList.Count; i < openAdressHash.Length; i++)
+            {
+                var node = Instantiate(nodePrefab, scrollRect.content);
+                nodeList.Add(node);
+                node.SetText($"  I: {i + 1}");
+            }
+        }
+        for (int i = 0; i < openAdressHash.Length; i++)
+        {
+            if (nodeList[i].isInItem && !openAdressHash[i].IsOccupied)
+            {
+                nodeList[i].Remove(i + 1);
+            }
+            else if (openAdressHash[i].IsOccupied)
+            {
+                nodeList[i].GetItem(openAdressHash[i].Key, openAdressHash[i].Value);
+            }
+        }
+    }
+
 }

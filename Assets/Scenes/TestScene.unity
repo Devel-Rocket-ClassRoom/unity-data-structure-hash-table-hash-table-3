@@ -1903,10 +1903,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df0100581f472ba4bbda5a442866278d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HashTableUIManager
+  collision: 0
+  ps: 0
   hashNodeView: {fileID: 1791485848}
   keyInput: {fileID: 1544253339}
   valueInput: {fileID: 1681078591}
   dropdown: {fileID: 1742269785}
+  probDropdown: {fileID: 1844357985}
   addButton: {fileID: 928292618}
   removeButton: {fileID: 1180837948}
   clearButton: {fileID: 1267470663}
@@ -2214,7 +2217,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2977451410849893712, guid: 6b36ee109d2114f4aa73aac1f6149609, type: 3}
       propertyPath: m_Options.m_Options.Array.data[2].m_Text
-      value: Double Hash
+      value: DoubleHash
+      objectReference: {fileID: 0}
+    - target: {fileID: 2977451410849893712, guid: 6b36ee109d2114f4aa73aac1f6149609, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2977451410849893712, guid: 6b36ee109d2114f4aa73aac1f6149609, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1776053478}
+    - target: {fileID: 2977451410849893712, guid: 6b36ee109d2114f4aa73aac1f6149609, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: selectProbing
+      objectReference: {fileID: 0}
+    - target: {fileID: 2977451410849893712, guid: 6b36ee109d2114f4aa73aac1f6149609, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HashTableUIManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2977451410849893712, guid: 6b36ee109d2114f4aa73aac1f6149609, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 3231954187225551045, guid: 6b36ee109d2114f4aa73aac1f6149609, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -2250,6 +2273,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1966274806926768429, guid: 6b36ee109d2114f4aa73aac1f6149609, type: 3}
   m_PrefabInstance: {fileID: 1844357983}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1844357985 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2977451410849893712, guid: 6b36ee109d2114f4aa73aac1f6149609, type: 3}
+  m_PrefabInstance: {fileID: 1844357983}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TMP_Dropdown
 --- !u!1 &1880164262
 GameObject:
   m_ObjectHideFlags: 0
@@ -2552,6 +2586,30 @@ PrefabInstance:
     - target: {fileID: 2977451410849893712, guid: 6b36ee109d2114f4aa73aac1f6149609, type: 3}
       propertyPath: m_Options.m_Options.Array.data[2].m_Text
       value: OpenAdressing
+      objectReference: {fileID: 0}
+    - target: {fileID: 2977451410849893712, guid: 6b36ee109d2114f4aa73aac1f6149609, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2977451410849893712, guid: 6b36ee109d2114f4aa73aac1f6149609, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1776053478}
+    - target: {fileID: 2977451410849893712, guid: 6b36ee109d2114f4aa73aac1f6149609, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2977451410849893712, guid: 6b36ee109d2114f4aa73aac1f6149609, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnHashModeChanged
+      objectReference: {fileID: 0}
+    - target: {fileID: 2977451410849893712, guid: 6b36ee109d2114f4aa73aac1f6149609, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HashTableUIManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2977451410849893712, guid: 6b36ee109d2114f4aa73aac1f6149609, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 3231954187225551045, guid: 6b36ee109d2114f4aa73aac1f6149609, type: 3}
       propertyPath: m_AnchoredPosition.x

@@ -154,7 +154,6 @@ public class OpenAddressingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
         }
 
-        Debug.Log($"리사이즈 : {oldCapacity} -> {Capacity}");
 
     }
 
@@ -164,12 +163,15 @@ public class OpenAddressingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
         switch (probingStrategy)
         {
             case ProbingStrategy.Linear:
+                Debug.Log("Linear");
                 return (hash + attempt) % Capacity;
 
             case ProbingStrategy.Quadratic:
+                Debug.Log("Quadratic");
                 return (hash + attempt * attempt) % Capacity;
 
             case ProbingStrategy.DoubleHash:
+                Debug.Log("DoubleHash");
                 int step = GetSecondaryHash(hash);
                 return (hash + attempt * step) % Capacity;
             default:
@@ -214,7 +216,7 @@ public class OpenAddressingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
         deleted[index] = false;
 
-        Debug.Log($"Add : {key} -> {index}");
+        
     }
 
     public void Add(KeyValuePair<TKey, TValue> item)
