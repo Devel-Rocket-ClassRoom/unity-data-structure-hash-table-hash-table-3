@@ -8,7 +8,10 @@ public class SimpleHashTableTest : MonoBehaviour
         hashTable.Add("One", 1);
         hashTable.Add("Two", 2);
         hashTable.Add("Three", 3);
-        
+        hashTable.Add("Five", 5);
+
+        hashTable.Remove("Three");
+
         var array = hashTable.GetData();
         
         for (int i = 0; i < array.Length; i++)
