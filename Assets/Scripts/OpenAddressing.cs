@@ -6,6 +6,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
+using static UnityEditor.Experimental.GraphView.Port;
 using static UnityEngine.Rendering.DebugUI;
 
 [Serializable]
@@ -98,6 +99,20 @@ public class OpenAddressingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
         // 못 찾으면 반환
         return -1;
     }
+
+
+    public (bool IsOccupied, TKey Key, TValue Value)[] GetData()
+    {
+        var result = new (bool, TKey, TValue)[Capacity];
+        for (int i = 0; i < Capacity; i++)
+        {
+            result[i] = (occupied[i], keys[i], values[i]);
+        }
+        return result;
+    }
+
+
+
     private void ReSize()
     {
         int oldCapacity = Capacity;
