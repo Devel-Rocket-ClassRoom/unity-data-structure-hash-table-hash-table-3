@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -96,6 +97,33 @@ public class HashNodeView : MonoBehaviour
             else if (openAdressHash[i].IsOccupied)
             {
                 nodeList[i].GetItem(openAdressHash[i].Key, openAdressHash[i].Value);
+            }
+        }
+    }
+    public void UpdateNodeListChaining(ChainingHashTable<string, string> hashTable)
+    {
+        var chainingHash = hashTable.GetData();
+
+        if (chainingHash.Length > nodeList.Count)
+        {
+            for (int i = nodeList.Count; i < chainingHash.Length; i++)
+            {
+                var node = Instantiate(nodePrefab, scrollRect.content);
+                nodeList.Add(node);
+                node.SetText($"  I: {i + 1}");
+            }
+        }
+        for (int i = 0; i < chainingHash.Length; i++)
+        {
+            
+            if (nodeList[i].isInItem && chainingHash[i].Count == 0)
+            {
+                nodeList[i].Remove(i + 1);
+            }
+            else if (chainingHash[i].Count != 0)
+            {
+                
+                //nodeList[i].GetItem(chainingHash[i]., chainingHash[i].Value);
             }
         }
     }

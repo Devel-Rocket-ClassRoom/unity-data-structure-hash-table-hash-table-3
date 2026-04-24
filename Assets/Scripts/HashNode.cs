@@ -1,4 +1,7 @@
+using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,6 +30,19 @@ public class HashNode : MonoBehaviour
         this.value = value;
         isOccupied = true;
         SetText($"  Key: {key}\n  Value: {value}");
+        this.GetComponent<Image>().color = Color.green;
+    }
+
+    public void GetItems(List<(string, string)> items)
+    {
+        var keys = items.Select(x => x.Item1).ToList();
+        var values = items.Select(x => x.Item2).ToList();
+
+        isOccupied = true;
+        key = keys[0];
+        value = values[1];
+
+        SetText($"  Key: {string.Join(", ", keys)}\n  Value: {string.Join(", ", values)}");
         this.GetComponent<Image>().color = Color.green;
     }
 

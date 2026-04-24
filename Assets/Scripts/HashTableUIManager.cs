@@ -54,7 +54,7 @@ public class HashTableUIManager : MonoBehaviour
                 Simple((SimpleHashTable<string,string>)hashTable);
                 break;
             case Collision.Chaining:
-                Chaining();
+                //Chaining();
                 break;
             case Collision.OpenAdressing:
                 OpenAdressing((OpenAddressingHashTable<string,string>)hashTable);
@@ -93,14 +93,12 @@ public class HashTableUIManager : MonoBehaviour
             {
                 case Collision.Simple:
                     hashTable = new SimpleHashTable<string,string>();
-                    //hashNodeView.UpdateNodeListSimple((SimpleHashTable<string, string>)hashTable);
                     break;
                 case Collision.Chaining:
-                    
+                    hashTable = new ChainingHashTable<string,string>();
                     break;
                 case Collision.OpenAdressing:
                     hashTable = new OpenAddressingHashTable<string,string>(ps);
-                    //hashNodeView.UpdateNodeListOpenAdressing((OpenAddressingHashTable<string, string>)hashTable);
                     break;
 
             }
@@ -126,9 +124,21 @@ public class HashTableUIManager : MonoBehaviour
             Debug.Log("ADD 실패 : 키 중복");
         }
     }
-    public void Chaining()
+    public void Chaining(ChainingHashTable<string,string> hash)
     {
+        try
+        {
+            hash.Add(keyInput.text, valueInput.text);
+            Debug.Log($"ADD:{keyInput.text}->{valueInput.text} ");
+            keyInput.text = string.Empty;
+            valueInput.text = string.Empty;
+            hashNodeView.UpdateNodeListChaining(hash);
+        }
+        catch (ArgumentException e)
+        {
 
+            Debug.Log("ADD 실패 : 키 중복");
+        }
     }
     public void OpenAdressing(OpenAddressingHashTable<string,string> hash)
     {
