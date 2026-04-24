@@ -115,15 +115,13 @@ public class HashNodeView : MonoBehaviour
         }
         for (int i = 0; i < chainingHash.Length; i++)
         {
-            
             if (nodeList[i].isInItem && chainingHash[i].Count == 0)
             {
                 nodeList[i].Remove(i + 1);
             }
             else if (chainingHash[i].Count != 0)
             {
-                
-                //nodeList[i].GetItem(chainingHash[i]., chainingHash[i].Value);
+                nodeList[i].GetItems(chainingHash[i]);
             }
         }
     }

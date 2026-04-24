@@ -40,7 +40,7 @@ public class HashNode : MonoBehaviour
 
         isOccupied = true;
         key = keys[0];
-        value = values[1];
+        value = values[0];
 
         SetText($"  Key: {string.Join(", ", keys)}\n  Value: {string.Join(", ", values)}");
         this.GetComponent<Image>().color = Color.green;

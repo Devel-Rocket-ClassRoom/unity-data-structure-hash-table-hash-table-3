@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using TMPro;
@@ -54,7 +55,7 @@ public class HashTableUIManager : MonoBehaviour
                 Simple((SimpleHashTable<string,string>)hashTable);
                 break;
             case Collision.Chaining:
-                //Chaining();
+                Chaining((ChainingHashTable<string, string>)hashTable);
                 break;
             case Collision.OpenAdressing:
                 OpenAdressing((OpenAddressingHashTable<string,string>)hashTable);
@@ -67,11 +68,38 @@ public class HashTableUIManager : MonoBehaviour
 
     private void OnRemoveClick()
     {
-        
-        if (selectKey != string.Empty)
+        switch (collision)
         {
-            hashTable.Remove(selectKey);
+            case Collision.Simple:
+                if (selectKey != string.Empty) 
+                    hashTable.Remove(selectKey);
+                hashNodeView.UpdateNodeListSimple((SimpleHashTable<string, string>)hashTable);
+                break;
+            case Collision.Chaining:
+                //Chaining();
+                try
+                {
+                    hashTable.Remove(keyInput.text);
+                }
+                catch (ArgumentException e)
+                {
+                    Debug.Log("Å° ¾øÀ½");
+                }
+                hashNodeView.UpdateNodeListChaining((ChainingHashTable<string, string>)hashTable);
+                keyInput.text = string.Empty;
+                break;
+            case Collision.OpenAdressing:
+                if (selectKey != string.Empty) 
+                    hashTable.Remove(selectKey);
+                hashNodeView.UpdateNodeListOpenAdressing((OpenAddressingHashTable<string, string>)hashTable);
+                break;
+
         }
+
+        //if (selectKey != string.Empty)
+        //{
+        //    hashTable.Remove(selectKey);
+        //}
         selectKey = string.Empty;
     }
     private void OnClearClick()

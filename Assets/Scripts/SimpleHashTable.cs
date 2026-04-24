@@ -182,6 +182,13 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue> where TKe
         return result;
     }
 
+    public List<(bool IsOccupied, TKey Key, TValue Value)>[] GetData2()
+    {
+        List<(bool IsOccupied, TKey Key, TValue Value)>[] list
+            = new List<(bool IsOccupied, TKey Key, TValue Value)>[capacity];
+        return list;
+    }
+
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
